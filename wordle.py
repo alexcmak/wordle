@@ -2,15 +2,25 @@ from enum import Enum
 import random
 import math
 
+'''
+This is a simple implementation of the Wordle game from New York Times.
+You have 6 chances to guess a 5 letter word.
+Each guess must be a real English word. I have a list of 5 letter words in a separate file.
+
+If you guess exactly correct letter and correct position you get a green color.
+If you guess right letter but wrong position you get a orange color.
+If you guess a totally not appear letter you get a grey color.
+'''
+
+MAX = 5
+MAX_TRIALS = 6
 
 class GuessResult(Enum):
     EXACT_CORRECT = 1
     APPEAR_WRONG_POSITION = 2
     NOT_APPEAR_AT_ALL = 3
 
-
 fiveletterwords = []
-
 
 def readWordList(fileName):
     try:
@@ -48,7 +58,6 @@ def readWordFromUser():
 def evaluateGuess(wordToGuess, userGuess):
     result = [None] * MAX
     guessWordArray = list(wordToGuess)
-    # char[] guessWordArray = wordToGuess.toCharArray();
 
     for i in range(MAX):
         if wordToGuess[i] == userGuess[i]:
@@ -56,7 +65,6 @@ def evaluateGuess(wordToGuess, userGuess):
             guessWordArray[i] = " "
 
     for i in range(MAX):
-        # //System.out.println("i="+i);
 
         if result[i] == GuessResult.EXACT_CORRECT:
             continue
@@ -88,10 +96,6 @@ def showGuessResult(choice, guessResult):
         elif r == GuessResult.NOT_APPEAR_AT_ALL:
             color = "GREY"
         print(f"{choice[i]} : {color}")
-
-
-MAX = 5
-MAX_TRIALS = 6
 
 
 def main():
