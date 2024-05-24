@@ -84,8 +84,26 @@ def evaluateGuess(wordToGuess, userGuess):
 
     return result
 
-def colored(r, g, b, text):
-    return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
+def green_letter(letter):
+    if sys.platform == "nt":
+        text = f"\033[38;2;{108};{169};{101}m{text}\033[0m"
+    else:
+        text = ('\x1b[6;30;42m' + letter + '\x1b[0m')
+    return text
+        
+def orange_letter(letter):
+    if sys.platform == "nt":
+        text = f"\033[38;2;{200};{182};{83}m{text}\033[0m"
+    else:
+        text = ('\x1b[1;30;103m' + letter + '\x1b[0m')
+    return text
+    
+def grey_letter(letter):
+    if sys.platform == "nt":
+        text = f"\033[38;2;{120};{124};{127}m{text}\033[0m"
+    else:
+        text = ('\x1b[1;97;100m' + letter + '\x1b[0m')
+    return text
 
 def showGuessResult(choice, guessResult):
     for i in range(MAX):
@@ -93,16 +111,15 @@ def showGuessResult(choice, guessResult):
         r = guessResult[i]
         letter = choice[i].upper()
 
-
         if r == GuessResult.EXACT_CORRECT:
             color = "GREEN"
-            colored_text = colored(108, 169, 101, letter)
+            colored_text = green_letter(letter)
         elif r == GuessResult.APPEAR_WRONG_POSITION:
             color = "ORANGE"
-            colored_text = colored(200, 182, 83, letter)
+            colored_text = orange_letter(letter)
         elif r == GuessResult.NOT_APPEAR_AT_ALL:
             color = "GREY"
-            colored_text = colored(120, 124, 127, letter)
+            colored_text = grey_letter(letter)
 
         print(colored_text, end='')
   
