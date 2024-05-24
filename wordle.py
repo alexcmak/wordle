@@ -84,19 +84,29 @@ def evaluateGuess(wordToGuess, userGuess):
 
     return result
 
+def colored(r, g, b, text):
+    return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
 
 def showGuessResult(choice, guessResult):
     for i in range(MAX):
         color = ""
         r = guessResult[i]
+        letter = choice[i].upper()
+
+
         if r == GuessResult.EXACT_CORRECT:
             color = "GREEN"
+            colored_text = colored(108, 169, 101, letter)
         elif r == GuessResult.APPEAR_WRONG_POSITION:
             color = "ORANGE"
+            colored_text = colored(200, 182, 83, letter)
         elif r == GuessResult.NOT_APPEAR_AT_ALL:
             color = "GREY"
-        print(f"{choice[i]} : {color}")
+            colored_text = colored(120, 124, 127, letter)
 
+        print(colored_text, end='')
+  
+    print()
 
 def main():
     readWordList("words5.txt")
