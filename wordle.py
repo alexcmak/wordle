@@ -79,7 +79,6 @@ def evaluateGuess(wordToGuess, userGuess):
                 break
 
         if not found:
-            # System.out.println( choice.charAt(i)+": GRAY");
             result[i] = GuessResult.NOT_APPEAR_AT_ALL
 
     return result
