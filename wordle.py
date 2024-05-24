@@ -1,6 +1,7 @@
 from enum import Enum
 import random
 import math
+import sys
 
 '''
 This is a simple implementation of the Wordle game from New York Times.
