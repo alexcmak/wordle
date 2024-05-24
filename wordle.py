@@ -1,7 +1,6 @@
 from enum import Enum
 import random
 import math
-import sys
 
 '''
 This is a simple implementation of the Wordle game from New York Times.
@@ -86,25 +85,13 @@ def evaluateGuess(wordToGuess, userGuess):
     return result
 
 def green_letter(letter):
-    if sys.platform == "nt":
-        text = f"\033[38;2;{108};{169};{101}m{text}\033[0m"
-    else:
-        text = ('\x1b[6;30;42m' + letter + '\x1b[0m')
-    return text
+     return ('\x1b[6;30;42m' + letter + '\x1b[0m')
         
 def orange_letter(letter):
-    if sys.platform == "nt":
-        text = f"\033[38;2;{200};{182};{83}m{text}\033[0m"
-    else:
-        text = ('\x1b[1;30;103m' + letter + '\x1b[0m')
-    return text
-    
+    return ('\x1b[1;30;103m' + letter + '\x1b[0m')
+
 def grey_letter(letter):
-    if sys.platform == "nt":
-        text = f"\033[38;2;{120};{124};{127}m{text}\033[0m"
-    else:
-        text = ('\x1b[1;97;100m' + letter + '\x1b[0m')
-    return text
+    return ('\x1b[1;97;100m' + letter + '\x1b[0m')
 
 def showGuessResult(choice, guessResult):
     for i in range(MAX):
