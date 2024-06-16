@@ -1,11 +1,12 @@
 from enum import Enum
 import random
 import math
+import sqlite3
 
 '''
 This is a simple implementation of the Wordle game from New York Times.
 You have 6 chances to guess a 5 letter word.
-Each guess must be a real English word. I have a list of 5 letter words in a separate file.
+Each guess must be a real English word. I have a list of 5 letter words in a database.
 
 If you guess exactly correct letter and correct position you get a green color.
 If you guess right letter but wrong position you get a orange color.
@@ -20,25 +21,18 @@ class GuessResult(Enum):
     APPEAR_WRONG_POSITION = 2
     NOT_APPEAR_AT_ALL = 3
 
-fiveletterwords = []
 
-def readWordList(fileName):
-    try:
-        print(f"reading file {fileName}")
-        with open(fileName, "r") as f:
-            for line in f:
-                fiveletterwords.append(line.rstrip("\n"))
-    except IOError:
-        print(f"Error: This game requires the {MAX} letter word list")
+def getGuessWord(conn):
+    
+    # select word from Dictionary
+    sql = "select word FROM dictionary order by random() limit 1;"
 
-
-def getGuessWord():
-    num = random.random()
-    random_int = math.floor(num * len(fiveletterwords))
-    return fiveletterwords[random_int]
+    cursor = conn.execute(sql)
+    word = cursor.fetchone()
+    return word[0]
 
 
-def readWordFromUser():
+def readWordFromUser(conn):
     isValidWord = False
     str = ""
     while not isValidWord:
@@ -48,7 +42,11 @@ def readWordFromUser():
             print(f"You must enter a {MAX} letter word")
             continue
         else:
-            if not str in fiveletterwords:
+            sql = "select count(*) from dictionary where word = '" + str + "'"
+            cursor = conn.execute(sql)
+            count = cursor.fetchone()[0]
+    
+            if count == 0:
                 print(f"You must enter a valid {MAX} letter word")
                 continue
 
@@ -113,31 +111,37 @@ def showGuessResult(choice, guessResult):
     print()
 
 def main():
-    readWordList("words5.txt")
-    if len(fiveletterwords)==0:
-        return
 
-    guessWord = getGuessWord()
     gameOver = False
     trial = 1
 
-    while not gameOver:
-        print(f"Trial {trial}")
-        # print("shh, it is: "+guessWord);
+    try:
+        conn = sqlite3.connect('wordle.db3')
+        guessWord = getGuessWord(conn)
 
-        choice = readWordFromUser()
+        while not gameOver:
+            print(f"Trial {trial}")
+            #print("shh, it is: "+guessWord);
 
-        if choice == guessWord:
-            print("You won!")
-            break
+            choice = readWordFromUser(conn)
 
-        guessResult = evaluateGuess(guessWord, choice)
-        showGuessResult(choice, guessResult)
-        trial = trial + 1
-        if trial > MAX_TRIALS:
-            print("Sorry you lost, the word is: " + guessWord)
-            gameOver = True
+            if choice == guessWord:
+                print("You won!")
+                break
 
+            guessResult = evaluateGuess(guessWord, choice)
+            showGuessResult(choice, guessResult)
+            trial = trial + 1
+            if trial > MAX_TRIALS:
+                print("Sorry you lost, the word is: " + guessWord)
+                gameOver = True
+
+        
+    except sqlite3.Error as error:
+        print('Program failed: ', error)
+        return
+
+    conn.close()
 
 if __name__ == "__main__":
     main()
