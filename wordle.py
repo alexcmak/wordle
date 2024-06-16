@@ -29,7 +29,7 @@ def readWordList(fileName):
             for line in f:
                 fiveletterwords.append(line.rstrip("\n"))
     except IOError:
-        print("Error: This game requires the 5 letter word list")
+        print(f"Error: This game requires the {MAX} letter word list")
 
 
 def getGuessWord():
@@ -79,7 +79,6 @@ def evaluateGuess(wordToGuess, userGuess):
                 break
 
         if not found:
-            # System.out.println( choice.charAt(i)+": GRAY");
             result[i] = GuessResult.NOT_APPEAR_AT_ALL
 
     return result
@@ -115,6 +114,8 @@ def showGuessResult(choice, guessResult):
 
 def main():
     readWordList("words5.txt")
+    if len(fiveletterwords)==0:
+        return
 
     guessWord = getGuessWord()
     gameOver = False
