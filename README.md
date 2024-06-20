@@ -9,3 +9,5 @@ If you guess right letter but wrong position you get a orange color.
 If you guess a totally not appear letter you get a grey color.
 
 I've done both java version and python version
+
+![screenshot](https://github.com/alexcmak/wordle/blob/main/example.png)
