@@ -10,4 +10,5 @@ If you guess a totally not appear letter you get a grey color.
 
 I've done both java version and python version
 
-![screenshot](https://github.com/alexcmak/wordle/blob/main/example.png)
+![screenshot](https://github.com/alexcmak/wordle/blob/master/example.png)
+

@@ -1,6 +1,4 @@
 from enum import Enum
-import random
-import math
 import sqlite3
 
 '''
@@ -126,6 +124,11 @@ def main():
             choice = readWordFromUser(conn)
 
             if choice == guessWord:
+                result = [None] * MAX
+                for i in range(0, MAX):
+                    result[i] = GuessResult.EXACT_CORRECT
+
+                showGuessResult(choice, result)
                 print("You won!")
                 break
 
